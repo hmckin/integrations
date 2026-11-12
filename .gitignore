@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Build & Vite cache
+dist/
+dist-ssr/
+.vite/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Local design reference screenshots
+design_context/
+
+# Logs & OS files
+*.log
+npm-debug.log*
+.DS_Store

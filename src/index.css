@@ -1,0 +1,167 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #f3f0e8;
+  --color-paper-deep: #e9e4d9;
+  --color-paper-warm: #faf8f1;
+  --color-ink: #171716;
+  --color-ink-soft: #57534c;
+  --color-line: #d7d1c4;
+  --color-accent: #b23a0b;
+  --color-accent-bright: #ff8a4c;
+  --color-signal: #7f9b6e;
+
+  --font-sans:
+    ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    monospace;
+
+  --shadow-float:
+    0 30px 60px -34px rgb(23 23 22 / 0.5), 0 10px 22px -14px rgb(23 23 22 / 0.3);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-paper font-sans text-ink antialiased;
+    overflow-x: clip;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    @apply bg-accent text-white;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .flow-dot {
+    animation: flow-dot 3.2s linear infinite;
+    animation-delay: var(--flow-delay, 0s);
+  }
+
+  @keyframes flow-dot {
+    0% {
+      left: 0%;
+      opacity: 0;
+    }
+    12% {
+      opacity: 1;
+    }
+    88% {
+      opacity: 1;
+    }
+    100% {
+      left: calc(100% - 0.25rem);
+      opacity: 0;
+    }
+  }
+
+  .wire-node {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    visibility: hidden;
+    will-change: left, top, transform, opacity;
+  }
+
+  .wire-badge {
+    pointer-events: auto;
+    cursor: pointer;
+    position: relative;
+    display: grid;
+    width: 54px;
+    height: 54px;
+    place-items: center;
+    border-radius: 9999px;
+    background-color: var(--badge-color);
+    background-color: color-mix(in srgb, var(--badge-color) 90%, #b8b2a6);
+    box-shadow:
+      0 1px 1px rgb(23 23 22 / 0.06),
+      0 14px 28px -12px rgb(23 23 22 / 0.38);
+    outline: 1px solid rgb(23 23 22 / 0.05);
+    transition: box-shadow 180ms ease;
+  }
+
+  .wire-badge[data-active="true"] {
+    box-shadow:
+      0 2px 4px rgb(23 23 22 / 0.08),
+      0 20px 36px -12px rgb(23 23 22 / 0.46);
+  }
+
+  .wire-label {
+    pointer-events: none;
+    position: absolute;
+    top: calc(100% + 7px);
+    left: 50%;
+    transform-origin: top center;
+    white-space: nowrap;
+    border-radius: 9999px;
+    border: 1px solid rgb(23 23 22 / 0.12);
+    background-color: rgb(250 248 241 / 0.94);
+    backdrop-filter: blur(4px);
+    padding: 3px 9px;
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    box-shadow: 0 6px 16px -8px rgb(23 23 22 / 0.28);
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+
+  .wire-label[data-primary="true"] {
+    border-color: rgb(23 23 22 / 0.24);
+    background-color: #faf8f1;
+  }
+
+  .wire-badge svg {
+    width: 25.5px;
+    height: 25.5px;
+  }
+
+  @media (min-width: 640px) {
+    .wire-badge {
+      width: 70px;
+      height: 70px;
+    }
+
+    .wire-badge svg {
+      width: 33px;
+      height: 33px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .flow-dot {
+      animation: none !important;
+    }
+  }
+}
