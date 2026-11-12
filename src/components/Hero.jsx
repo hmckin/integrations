@@ -102,13 +102,6 @@ export default function Hero() {
       aria-labelledby="hero-heading"
       className="relative overflow-hidden"
     >
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[560px] overflow-hidden"
-        aria-hidden="true"
-      >
-        <div className="absolute left-1/2 top-[6%] hidden h-[420px] w-[420px] -translate-x-1/2 rounded-full border border-line/30 lg:block" />
-      </div>
-
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
         <header className="flex items-center justify-between gap-6 py-5 sm:py-6">
           <div className="flex items-center gap-5">
