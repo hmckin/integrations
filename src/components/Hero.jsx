@@ -162,7 +162,7 @@ export default function Hero() {
             <span aria-hidden="true">
               <span className="block sm:inline">{copy.headlineLead} </span>
               <span
-                className="relative inline-block pb-1 align-bottom text-accent transition-[width] duration-300 ease-out"
+                className="relative inline-block pb-1 align-baseline text-accent transition-[width] duration-300 ease-out"
                 style={slotWidth ? { width: `${slotWidth}px` } : undefined}
               >
                 {copy.rotating.map((word, index) => {
