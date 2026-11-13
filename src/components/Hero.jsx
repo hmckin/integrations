@@ -100,14 +100,14 @@ export default function Hero() {
     <section
       id="top"
       aria-labelledby="hero-heading"
-      className="relative overflow-hidden"
+      className="relative overflow-x-clip"
     >
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
-        <header className="flex items-center justify-between gap-6 py-5 sm:py-6">
-          <div className="flex items-center gap-5">
+        <header className="flex items-center justify-between gap-3 py-4 sm:gap-6 sm:py-6">
+          <div className="flex min-w-0 items-center gap-5">
             <a
               href="#top"
-              className="font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-ink transition-colors duration-200 hover:text-accent"
+              className="whitespace-nowrap font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-ink transition-colors duration-200 hover:text-accent sm:tracking-[0.22em]"
               aria-label={`${copy.brand} — back to top`}
             >
               {copy.brand}
@@ -143,7 +143,7 @@ export default function Hero() {
             target="_blank"
             rel="noopener noreferrer"
             onClick={openCalendlyPopup}
-            className="group inline-flex items-center gap-2 rounded-full border border-ink/15 px-4 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-ink transition-colors duration-200 hover:border-ink hover:bg-ink hover:text-paper"
+            className="group inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border border-ink/15 px-3.5 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-ink transition-colors duration-200 hover:border-ink hover:bg-ink hover:text-paper sm:px-4"
           >
             <span className="hidden sm:inline">Book a Free Call</span>
             <span className="sm:hidden">Free call</span>
@@ -151,10 +151,10 @@ export default function Hero() {
           </a>
         </header>
 
-        <div className="mx-auto flex max-w-4xl flex-col items-center pb-4 pt-8 text-center sm:pt-11">
+        <div className="mx-auto flex max-w-4xl flex-col items-center pb-2 pt-6 text-center sm:pb-4 sm:pt-11">
           <h1
             id="hero-heading"
-            className="text-[clamp(2.4rem,4.6vw,4.2rem)] font-semibold leading-[1.04] tracking-[-0.045em] text-ink"
+            className="text-[clamp(2.25rem,8.4vw,4.2rem)] font-semibold leading-[1.04] tracking-[-0.045em] text-ink sm:text-[clamp(2.4rem,4.6vw,4.2rem)]"
           >
             <span className="sr-only">
               Save hours on reporting, data entry, analytics, and operations.
@@ -205,17 +205,17 @@ export default function Hero() {
             </span>
           </h1>
 
-          <p className="mx-auto mt-6 max-w-xl text-base leading-7 text-ink-soft sm:text-lg sm:leading-8">
+          <p className="mx-auto mt-5 max-w-xl text-[15.5px] leading-7 text-ink-soft sm:mt-6 sm:text-lg sm:leading-8">
             {copy.subhead}
           </p>
 
-          <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-7">
+          <div className="mt-7 flex w-full flex-col items-center gap-4 sm:mt-8 sm:w-auto sm:flex-row sm:justify-center sm:gap-7">
             <a
               href={CALENDLY_URL}
               target="_blank"
               rel="noopener noreferrer"
               onClick={openCalendlyPopup}
-              className="group inline-flex w-full items-center justify-between gap-5 rounded-full bg-accent px-7 py-4 text-base font-medium text-white transition-colors duration-200 hover:bg-ink sm:w-auto sm:justify-start"
+              className="group inline-flex w-full max-w-[260px] items-center justify-between gap-5 rounded-full bg-accent px-7 py-3.5 text-[15px] font-medium text-white transition-colors duration-200 hover:bg-ink sm:w-auto sm:max-w-none sm:justify-start sm:py-4 sm:text-base"
             >
               {copy.primaryCta}
               <ArrowRight />
@@ -223,7 +223,7 @@ export default function Hero() {
 
             <a
               href="#process"
-              className="group inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-soft transition-colors duration-200 hover:text-ink"
+              className="group inline-flex items-center gap-2 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-soft transition-colors duration-200 hover:text-ink sm:py-0"
             >
               {copy.secondaryCta}
               <ArrowDown />
@@ -232,7 +232,7 @@ export default function Hero() {
         </div>
       </div>
 
-      <div id="integrations" className="relative pt-4 sm:pt-6">
+      <div id="integrations" className="relative pt-2 sm:pt-6">
         <WireLandscape />
       </div>
     </section>

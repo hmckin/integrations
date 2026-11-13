@@ -351,9 +351,9 @@ export default function WireLandscape() {
 
     const camera = new THREE.PerspectiveCamera(32, 1, 0.5, 280);
     const baseCamX = 0;
-    const baseCamY = compact ? 15.6 : 14.6;
-    const baseCamZ = compact ? 44 : 41;
-    const lookTarget = new THREE.Vector3(0, compact ? 5.9 : 5.7, -26);
+    let baseCamY = 14.6;
+    let baseCamZ = 41;
+    const lookTarget = new THREE.Vector3(0, 5.7, -26);
     camera.position.set(baseCamX, baseCamY, baseCamZ);
     camera.lookAt(lookTarget);
 
@@ -417,24 +417,44 @@ export default function WireLandscape() {
     wireMesh.frustumCulled = false;
     scene.add(wireMesh);
 
-    const xScale = compact ? 0.62 : 1;
-    const controlPoints = TRAIL_WAYPOINTS.map(
-      ([x, y, z]) => new THREE.Vector3(x * xScale, y, z),
-    );
-
-    const trailCurve = new THREE.CatmullRomCurve3(
-      controlPoints,
-      false,
-      "catmullrom",
-      0.5,
-    );
-    const trailSamples = trailCurve.getPoints(720);
-
-    const cumulative = new Float32Array(trailSamples.length);
+    let currentXScale = -1;
+    let trailSamples = [];
+    let cumulative = new Float32Array(0);
     let totalLength = 0;
-    for (let i = 1; i < trailSamples.length; i += 1) {
-      totalLength += trailSamples[i].distanceTo(trailSamples[i - 1]);
-      cumulative[i] = totalLength;
+    let activeVisibleSlots = VISIBLE_SLOTS;
+    let activeSlotSpeed = SLOT_SPEED;
+
+    function rebuildTrailForWidth(stageWidth) {
+      const isMobile = stageWidth < 640;
+      const isCompact = stageWidth < 1024;
+      const nextXScale = isMobile ? 0.66 : isCompact ? 0.86 : 1;
+
+      activeVisibleSlots = isMobile ? 9.0 : isCompact ? 10.4 : VISIBLE_SLOTS;
+      activeSlotSpeed = isMobile ? 0.32 : isCompact ? 0.36 : SLOT_SPEED;
+      baseCamY = isMobile ? 14.8 : isCompact ? 15.0 : 14.6;
+      baseCamZ = isMobile ? 42.5 : isCompact ? 42.0 : 41;
+      lookTarget.set(0, isMobile ? 6.7 : isCompact ? 6.0 : 5.7, -26);
+
+      if (nextXScale === currentXScale) return;
+      currentXScale = nextXScale;
+
+      const controlPoints = TRAIL_WAYPOINTS.map(
+        ([x, y, z]) => new THREE.Vector3(x * nextXScale, y, z),
+      );
+
+      const trailCurve = new THREE.CatmullRomCurve3(
+        controlPoints,
+        false,
+        "catmullrom",
+        0.5,
+      );
+      trailSamples = trailCurve.getPoints(720);
+      cumulative = new Float32Array(trailSamples.length);
+      totalLength = 0;
+      for (let i = 1; i < trailSamples.length; i += 1) {
+        totalLength += trailSamples[i].distanceTo(trailSamples[i - 1]);
+        cumulative[i] = totalLength;
+      }
     }
 
     const sampled = new THREE.Vector3();
@@ -495,13 +515,13 @@ export default function WireLandscape() {
       // Pass 1: compute 3D projected positions and base visibility for all nodes
       for (let i = 0; i < count; i += 1) {
         const slotPos = (((i + slotOffset) % count) + count) % count;
-        if (slotPos > VISIBLE_SLOTS) {
+        if (slotPos > activeVisibleSlots) {
           isVisibleArr[i] = 0;
           baseOpacities[i] = 0;
           continue;
         }
 
-        const curveU = slotPos / VISIBLE_SLOTS;
+        const curveU = slotPos / activeVisibleSlots;
         const point = pointAlongTrail(curveU);
         const distance = camera.position.distanceTo(point);
 
@@ -630,9 +650,16 @@ export default function WireLandscape() {
     function sizeRenderer() {
       width = stage.clientWidth || 1;
       height = stage.clientHeight || 1;
+      rebuildTrailForWidth(width);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.setSize(width, height, false);
       camera.aspect = width / height;
+      camera.position.set(
+        baseCamX + currentParallaxX,
+        baseCamY + currentParallaxY,
+        baseCamZ,
+      );
+      camera.lookAt(lookTarget);
       camera.updateProjectionMatrix();
       camera.updateMatrixWorld();
     }
@@ -661,7 +688,8 @@ export default function WireLandscape() {
       if (Math.abs(speedMix - targetSpeedMix) < 0.001) speedMix = targetSpeedMix;
 
       const activeCount = nodesContainer.children.length || 1;
-      slotOffset = (slotOffset + delta * SLOT_SPEED * speedMix) % activeCount;
+      slotOffset =
+        (slotOffset + delta * activeSlotSpeed * speedMix) % activeCount;
 
       currentParallaxX += (targetParallaxX - currentParallaxX) * 0.045;
       currentParallaxY += (targetParallaxY - currentParallaxY) * 0.045;
@@ -705,11 +733,21 @@ export default function WireLandscape() {
     };
   }, []);
 
+  function handleStagePointerDown(event) {
+    if (!event.target.closest?.(".wire-badge")) {
+      if (hoverStateRef.current.hoveredIndex !== -1) {
+        hoverStateRef.current.hoveredIndex = -1;
+        hoverStateRef.current.leaveTimestamp = performance.now();
+      }
+    }
+  }
+
   return (
-    <div className="relative -mt-2 w-full sm:-mt-4">
+    <div className="relative -mt-1 w-full sm:-mt-4">
       <div
         ref={stageRef}
-        className="relative h-[410px] w-full overflow-hidden sm:h-[450px] lg:h-[490px]"
+        onPointerDown={handleStagePointerDown}
+        className="relative h-[290px] w-full overflow-hidden sm:h-[430px] lg:h-[490px]"
         role="img"
         aria-label="A 3D wireframe mountain landscape with integration icons flowing continuously along a winding valley and ridge trail."
       >

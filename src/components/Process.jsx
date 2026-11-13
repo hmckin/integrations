@@ -95,7 +95,7 @@ export default function Process() {
 
   return (
     <section id="process" aria-labelledby="process-heading">
-      <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28 lg:px-12 lg:py-32">
+      <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-28 lg:px-12 lg:py-32">
         {/* Clean section header */}
         <div className="max-w-2xl">
           <p className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.18em] text-ink-soft">
@@ -118,9 +118,9 @@ export default function Process() {
           </h2>
         </div>
 
-        {/* Two-column body: naturally scrolling vertical timeline on left, sticky Workflow Monitor on right */}
-        <div className="mt-14 grid gap-14 sm:mt-20 lg:grid-cols-12 lg:items-start lg:gap-12">
-          <div className="lg:col-span-6">
+        {/* Two-column body on desktop; inline step + visual pairs on mobile/tablet */}
+        <div className="mt-12 grid min-w-0 gap-12 sm:mt-20 lg:grid-cols-12 lg:items-start lg:gap-12">
+          <div className="min-w-0 lg:col-span-6">
             <ol className="relative">
               {copy.items.map((item, index) => {
                 const isActive = index === activeIndex;
@@ -133,8 +133,8 @@ export default function Process() {
                     ref={(el) => {
                       itemRefs.current[index] = el;
                     }}
-                    className={`relative flex gap-5 sm:gap-7 ${
-                      isLast ? "pb-4" : "pb-20 sm:pb-28"
+                    className={`relative ${
+                      isLast ? "pb-2 lg:pb-4" : "pb-14 sm:pb-20 lg:pb-28"
                     }`}
                   >
                     {/* Vertical timeline connector line */}
@@ -151,70 +151,85 @@ export default function Process() {
                       </span>
                     )}
 
-                    {/* Concentric step indicator circle */}
-                    <div className="relative z-10 shrink-0 pt-0.5">
-                      <span
-                        className={`flex h-10 w-10 items-center justify-center rounded-full bg-paper transition-all duration-500 ease-out ${
-                          isActive
-                            ? "border border-accent/45"
-                            : "border border-transparent"
-                        }`}
-                        aria-hidden="true"
-                      >
+                    <div className="flex gap-4 sm:gap-7">
+                      {/* Concentric step indicator circle */}
+                      <div className="relative z-10 shrink-0 pt-0.5">
                         <span
-                          className={`flex h-7 w-7 items-center justify-center rounded-full font-mono text-xs font-medium transition-all duration-500 ease-out ${
+                          className={`flex h-10 w-10 items-center justify-center rounded-full bg-paper transition-all duration-500 ease-out ${
                             isActive
-                              ? "bg-accent text-white shadow-xs"
-                              : isPast
-                                ? "border border-accent/35 bg-paper-warm text-accent"
-                                : "border border-line bg-paper-warm text-ink-soft"
+                              ? "border border-accent/45"
+                              : "border border-transparent"
+                          }`}
+                          aria-hidden="true"
+                        >
+                          <span
+                            className={`flex h-7 w-7 items-center justify-center rounded-full font-mono text-xs font-medium transition-all duration-500 ease-out ${
+                              isActive
+                                ? "bg-accent text-white shadow-xs"
+                                : isPast
+                                  ? "border border-accent/35 bg-paper-warm text-accent"
+                                  : "border border-line bg-paper-warm text-ink-soft"
+                            }`}
+                          >
+                            {item.step}
+                          </span>
+                        </span>
+                      </div>
+
+                      {/* Step content */}
+                      <div className="min-w-0 flex-1 pt-0.5">
+                        <h3
+                          className={`origin-left text-[clamp(1.55rem,2.9vw,2.35rem)] font-semibold leading-[1.08] tracking-[-0.035em] transition-all duration-500 ease-out ${
+                            isActive
+                              ? "text-ink lg:scale-100"
+                              : "text-ink lg:scale-[0.94] lg:text-ink/42"
                           }`}
                         >
-                          {item.step}
-                        </span>
-                      </span>
+                          {item.title}
+                        </h3>
+
+                        <p
+                          className={`mt-2 text-sm font-medium transition-colors duration-500 sm:mt-2.5 ${
+                            isActive
+                              ? "text-accent"
+                              : "text-accent lg:text-accent/55"
+                          }`}
+                        >
+                          {item.tag}
+                        </p>
+
+                        <p
+                          className={`mt-3 max-w-md text-[15px] leading-7 transition-colors duration-500 sm:mt-3.5 sm:text-base ${
+                            isActive
+                              ? "text-ink-soft"
+                              : "text-ink-soft lg:text-ink-soft/55"
+                          }`}
+                        >
+                          {item.body}
+                        </p>
+                      </div>
                     </div>
 
-                    {/* Step content */}
-                    <div className="min-w-0 flex-1 pt-0.5">
-                      <h3
-                        className={`origin-left text-[clamp(1.7rem,2.9vw,2.35rem)] font-semibold leading-[1.08] tracking-[-0.035em] transition-all duration-500 ease-out ${
-                          isActive
-                            ? "scale-100 text-ink"
-                            : "scale-[0.94] text-ink/42"
-                        }`}
-                      >
-                        {item.title}
-                      </h3>
-
-                      <p
-                        className={`mt-2.5 text-sm font-medium transition-colors duration-500 ${
-                          isActive ? "text-accent" : "text-accent/55"
-                        }`}
-                      >
-                        {item.tag}
-                      </p>
-
-                      <p
-                        className={`mt-3.5 max-w-md text-[15px] leading-7 transition-colors duration-500 sm:text-base ${
-                          isActive ? "text-ink-soft" : "text-ink-soft/55"
-                        }`}
-                      >
-                        {item.body}
-                      </p>
+                    {/* Inline process component per step on mobile & tablet */}
+                    <div className="relative z-10 mt-6 min-w-0 lg:hidden">
+                      {index === 0 && <DiscoveryVisual />}
+                      {index === 1 && (
+                        <BuildVisual active={activeIndex === 1} />
+                      )}
+                      {index === 2 && <ProcessVisual />}
                     </div>
                   </li>
                 );
               })}
             </ol>
 
-            <div className="mt-12 pl-[60px] sm:mt-14 sm:pl-[68px]">
+            <div className="mt-10 sm:mt-12 lg:mt-14 lg:pl-[68px]">
               <a
                 href={CALENDLY_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={openCalendlyPopup}
-                className="group inline-flex items-center gap-3 rounded-full border border-ink/15 px-6 py-3.5 text-sm font-medium text-ink transition-colors duration-200 hover:border-ink hover:bg-ink hover:text-paper"
+                className="group inline-flex w-full items-center justify-between gap-3 rounded-full border border-ink/15 px-6 py-3.5 text-sm font-medium text-ink transition-colors duration-200 hover:border-ink hover:bg-ink hover:text-paper sm:w-auto sm:justify-start"
               >
                 {copy.cta}
                 <ArrowRight />
@@ -222,8 +237,8 @@ export default function Process() {
             </div>
           </div>
 
-          <div className="lg:col-span-6 lg:sticky lg:top-24">
-            <div className="grid">
+          <div className="hidden min-w-0 lg:col-span-6 lg:sticky lg:top-24 lg:block">
+            <div className="grid min-w-0">
               <div
                 className={`col-start-1 row-start-1 transition-all duration-500 ease-out ${
                   activeIndex === 0

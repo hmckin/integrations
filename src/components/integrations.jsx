@@ -217,7 +217,7 @@ export function IntegrationIcon({ name }) {
     return (
       <svg
         viewBox={multi.viewBox}
-        className="h-6 w-6 sm:h-7 sm:w-7"
+        className="h-5 w-5 sm:h-7 sm:w-7"
         aria-hidden="true"
       >
         {multi.paths.map((segment, index) => (
@@ -233,7 +233,7 @@ export function IntegrationIcon({ name }) {
     return (
       <svg
         viewBox={brand.viewBox ?? "0 0 24 24"}
-        className="h-7 w-7 sm:h-8 sm:w-8"
+        className="h-[22px] w-[22px] sm:h-8 sm:w-8"
         aria-hidden="true"
       >
         <path
@@ -252,7 +252,7 @@ export function IntegrationIcon({ name }) {
     return (
       <svg
         viewBox="0 0 24 24"
-        className="h-7 w-7 sm:h-8 sm:w-8"
+        className="h-[22px] w-[22px] sm:h-8 sm:w-8"
         fill="none"
         stroke="#fff"
         strokeWidth="1.9"

@@ -40,9 +40,9 @@ export default function CTA() {
       aria-labelledby="cta-heading"
       className="bg-ink text-paper"
     >
-      <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28 lg:px-12 lg:py-32">
-        <div className="grid gap-12 lg:grid-cols-12 lg:items-end lg:gap-10">
-          <div className="lg:col-span-8">
+      <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-28 lg:px-12 lg:py-32">
+        <div className="grid min-w-0 gap-10 sm:gap-12 lg:grid-cols-12 lg:items-end lg:gap-10">
+          <div className="min-w-0 lg:col-span-8">
             <p className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.18em] text-accent-bright">
               <span className="h-1.5 w-1.5 bg-accent-bright" aria-hidden="true" />
               {copy.eyebrow}
@@ -50,23 +50,23 @@ export default function CTA() {
 
             <h2
               id="cta-heading"
-              className="mt-6 max-w-4xl text-balance text-[clamp(2.5rem,6vw,4.8rem)] font-semibold leading-[0.98] tracking-[-0.045em]"
+              className="mt-5 max-w-4xl text-balance text-[clamp(2.15rem,7.5vw,4.8rem)] font-semibold leading-[1.02] tracking-[-0.045em] sm:mt-6 sm:leading-[0.98]"
             >
               {copy.heading}
             </h2>
 
-            <p className="mt-7 max-w-xl text-lg leading-8 text-paper/65">
+            <p className="mt-5 max-w-xl text-base leading-7 text-paper/65 sm:mt-7 sm:text-lg sm:leading-8">
               {copy.body}
             </p>
           </div>
 
-          <div className="lg:col-span-4 lg:justify-self-end">
+          <div className="min-w-0 lg:col-span-4 lg:justify-self-end">
             <a
               href={CALENDLY_URL}
               target="_blank"
               rel="noopener noreferrer"
               onClick={openCalendlyPopup}
-              className="group inline-flex w-full items-center justify-between gap-6 rounded-full bg-accent-bright px-8 py-5 text-base font-medium text-ink transition-colors duration-200 hover:bg-paper focus-visible:outline-accent-bright sm:w-auto sm:justify-start"
+              className="group inline-flex w-full items-center justify-between gap-6 rounded-full bg-accent-bright px-7 py-4 text-base font-medium text-ink transition-colors duration-200 hover:bg-paper focus-visible:outline-accent-bright sm:w-auto sm:justify-start sm:px-8 sm:py-5"
             >
               {copy.button}
               <ArrowUpRight />
@@ -86,7 +86,7 @@ export default function CTA() {
           </div>
         </div>
 
-        <div className="mt-20 flex flex-col gap-4 border-t border-paper/15 pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-14 flex flex-col gap-3 border-t border-paper/15 pt-6 sm:mt-20 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
           <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-paper/60">
             {copy.footerLeft}
           </p>

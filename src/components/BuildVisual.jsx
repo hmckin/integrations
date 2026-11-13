@@ -96,7 +96,7 @@ export default function BuildVisual({ active = false }) {
   const preset = PRESETS[presetIndex];
 
   return (
-    <figure className="flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-line bg-paper-warm shadow-float">
+    <figure className="flex h-full min-w-0 flex-col justify-between overflow-hidden rounded-2xl border border-line bg-paper-warm shadow-float">
       <p className="sr-only">
         Custom workflow builder in progress: connects your existing input tools
         through a tailored custom software module and routes results to your
@@ -104,9 +104,9 @@ export default function BuildVisual({ active = false }) {
       </p>
 
       {/* Top status bar */}
-      <div className="flex items-center justify-between border-b border-line px-5 py-4">
-        <div className="flex items-center gap-2.5">
-          <span className="relative flex h-2 w-2">
+      <div className="flex items-center justify-between gap-2 border-b border-line px-4 py-3.5 sm:px-5 sm:py-4">
+        <div className="flex min-w-0 items-center gap-2 sm:gap-2.5">
+          <span className="relative flex h-2 w-2 shrink-0">
             <span
               className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-50"
               aria-hidden="true"
@@ -116,18 +116,18 @@ export default function BuildVisual({ active = false }) {
               aria-hidden="true"
             />
           </span>
-          <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink-soft">
+          <p className="truncate font-mono text-[9.5px] uppercase tracking-[0.12em] text-ink-soft sm:text-[10px] sm:tracking-[0.16em]">
             Workflow studio
           </p>
         </div>
-        <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-accent">
+        <p className="shrink-0 font-mono text-[9.5px] uppercase tracking-[0.12em] text-accent sm:text-[10px] sm:tracking-[0.16em]">
           Build in progress
         </p>
       </div>
 
       {/* Blueprint dot-grid canvas with 1 -> Custom Module -> 2 branching graph */}
       <div
-        className="relative flex flex-1 items-center px-5 py-6"
+        className="relative flex flex-1 items-center px-4 py-5 sm:px-5 sm:py-6"
         style={{
           backgroundImage:
             "radial-gradient(rgb(23 23 22 / 0.11) 1px, transparent 1px)",
@@ -135,7 +135,97 @@ export default function BuildVisual({ active = false }) {
           backgroundPosition: "center",
         }}
       >
-        <div className="relative flex w-full items-center justify-between gap-2">
+        {/* Mobile vertical blueprint flow (< sm) */}
+        <div className="flex w-full flex-col items-center sm:hidden">
+          <ToolNode item={preset.input} transitioning={transitioning} />
+
+          <div
+            className="relative my-1.5 h-6 w-px bg-line"
+            aria-hidden="true"
+          >
+            <span
+              className="flow-dot-y absolute left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-accent"
+              style={{ "--flow-delay": "0s" }}
+            />
+          </div>
+
+          <div className="relative z-10 w-full max-w-[244px] rounded-xl border border-accent/40 bg-paper-warm p-3.5 shadow-[0_12px_28px_-16px_rgba(23,23,22,0.35)]">
+            <div className="flex items-center justify-between gap-2">
+              <span className="font-mono text-[8.5px] font-medium uppercase tracking-[0.15em] text-accent">
+                Custom build
+              </span>
+              <span
+                className="inline-flex h-3.5 w-6 items-center rounded-full bg-accent p-0.5"
+                aria-hidden="true"
+              >
+                <span className="ml-auto h-2.5 w-2.5 rounded-full bg-white" />
+              </span>
+            </div>
+
+            <p
+              className={`mt-2 text-[14px] font-semibold tracking-[-0.015em] text-ink transition-opacity duration-300 ${
+                transitioning ? "opacity-0" : "opacity-100"
+              }`}
+            >
+              {preset.rule}
+            </p>
+
+            <div className="mt-2.5 flex items-center justify-between gap-2 border-t border-line/80 pt-2">
+              <span
+                className={`rounded-md bg-paper-deep/85 px-1.5 py-0.5 font-mono text-[8px] uppercase tracking-[0.12em] text-ink-soft transition-opacity duration-300 ${
+                  transitioning ? "opacity-0" : "opacity-100"
+                }`}
+              >
+                {preset.tag}
+              </span>
+              <span className="font-mono text-[8px] uppercase tracking-[0.12em] text-signal">
+                2 outputs
+              </span>
+            </div>
+          </div>
+
+          <div className="relative h-7 w-40" aria-hidden="true">
+            <svg
+              viewBox="0 0 160 28"
+              className="h-full w-full overflow-visible"
+            >
+              <path
+                d="M 80 0 C 80 14, 28 14, 28 28"
+                fill="none"
+                stroke="#d7d1c4"
+                strokeWidth="1.2"
+                vectorEffect="non-scaling-stroke"
+              />
+              <path
+                d="M 80 0 C 80 14, 132 14, 132 28"
+                fill="none"
+                stroke="#b23a0b"
+                strokeOpacity="0.45"
+                strokeDasharray="3 3"
+                strokeWidth="1.2"
+                vectorEffect="non-scaling-stroke"
+              />
+            </svg>
+          </div>
+
+          <div className="flex w-40 items-start justify-between">
+            <div className="flex w-14 justify-center">
+              <ToolNode
+                item={preset.outputTop}
+                transitioning={transitioning}
+              />
+            </div>
+            <div className="flex w-14 justify-center">
+              <ToolNode
+                item={preset.outputBottom}
+                transitioning={transitioning}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Tablet & Desktop horizontal blueprint flow (sm+) */}
+        <div className="relative hidden w-full items-center justify-between gap-2 sm:flex">
           {/* Left input tool */}
           <div className="relative z-10 flex w-14 shrink-0 justify-center">
             <ToolNode
@@ -234,8 +324,8 @@ export default function BuildVisual({ active = false }) {
       </div>
 
       {/* Build progress milestone strip */}
-      <div className="border-t border-line px-5 py-4">
-        <div className="flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.15em]">
+      <div className="border-t border-line px-4 py-3.5 sm:px-5 sm:py-4">
+        <div className="flex items-center justify-between gap-1.5 whitespace-nowrap font-mono text-[8px] uppercase tracking-[0.08em] sm:gap-2 sm:text-[9px] sm:tracking-[0.15em]">
           <span className="text-signal">01 Scoped ✓</span>
           <span className="font-medium text-accent">02 Custom build</span>
           <span className="text-ink-soft/60">03 Live handoff</span>
@@ -251,7 +341,7 @@ export default function BuildVisual({ active = false }) {
       </div>
 
       {/* Grounding footer matching Step 03 */}
-      <div className="flex items-start gap-2.5 border-t border-line bg-paper-deep/50 px-5 py-4">
+      <div className="flex items-start gap-2.5 border-t border-line bg-paper-deep/50 px-4 py-3.5 sm:px-5 sm:py-4">
         <span
           className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-accent"
           aria-hidden="true"
