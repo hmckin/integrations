@@ -131,6 +131,12 @@ export default function Hero() {
               Integrations
             </a>
             <a
+              href="#calculator"
+              className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink-soft transition-colors duration-200 hover:text-ink"
+            >
+              Calculator
+            </a>
+            <a
               href="#contact"
               className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink-soft transition-colors duration-200 hover:text-ink"
             >

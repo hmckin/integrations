@@ -4,7 +4,7 @@ import { CALENDLY_URL, openCalendlyPopup } from "./calendly.js";
 const CONTACT_EMAIL = "harry@hmckinney.com";
 
 const copy = {
-  eyebrow: "03 / Book a call",
+  eyebrow: "04 / Book a call",
   heading: "Find hours lost to your operation",
   body: "You will get a direct reply from the engineer who would build it.",
   button: "Book a Free Call",

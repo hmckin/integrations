@@ -1,5 +1,6 @@
 import Hero from "./components/Hero.jsx";
 import Process from "./components/Process.jsx";
+import Calculator from "./components/Calculator.jsx";
 import CTA from "./components/CTA.jsx";
 
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
       <main id="main" tabIndex={-1} className="focus:outline-none">
         <Hero />
         <Process />
+        <Calculator />
         <CTA />
       </main>
     </>
